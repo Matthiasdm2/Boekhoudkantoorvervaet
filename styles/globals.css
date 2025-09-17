@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Fancy gradient button */
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-semibold text-white shadow-soft transition transform hover:-translate-y-0.5 hover:shadow-elevate;
+  background-image: linear-gradient(90deg, #5B7CFA, #0F3D9E);
+}
+
+.badge {
+  @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-brand-100 text-brand-800;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-soft p-6 transition hover:-translate-y-1 hover:shadow-elevate;
+}
+/* Nav link baseline */
+.nav-link { @apply text-slate-700 hover:text-primary; }
+.dropdown-link { @apply block px-3 py-2 rounded hover:bg-slate-100; }

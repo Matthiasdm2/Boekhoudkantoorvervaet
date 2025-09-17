@@ -1,0 +1,18 @@
+<svg width="800" height="560" viewBox="0 0 800 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="800" height="560" rx="32" fill="url(#g)"/>
+<defs>
+<linearGradient id="g" x1="0" y1="0" x2="800" y2="560" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E0ECFF"/>
+<stop offset="1" stop-color="#F5F9FF"/>
+</linearGradient>
+</defs>
+<g stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.55">
+<circle cx="170" cy="210" r="54" fill="white"/>
+<circle cx="400" cy="180" r="70" fill="white"/>
+<circle cx="630" cy="210" r="54" fill="white"/>
+<path d="M170 285c-48 0-82 24-92 66 34 20 84 33 132 26 17-2 33-7 48-14-9-46-42-78-88-78z" fill="white"/>
+<path d="M400 270c-70 0-120 36-132 100 49 30 125 48 198 38 26-3 49-10 71-20-13-70-63-118-137-118z" fill="white"/>
+<path d="M630 285c48 0 82 24 92 66-34 20-84 33-132 26-17-2-33-7-48-14 9-46 42-78 88-78z" fill="white"/>
+</g>
+<text x="50%" y="92%" dominant-baseline="middle" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="40" font-weight="600" fill="#1E3A8A" opacity="0.5">Team / Kantoorbeeld</text>
+</svg>
