@@ -32,7 +32,15 @@ export default function VconnectChat() {
 
     // Placeholder response – later vervangen door echte API call
     setTimeout(() => {
-      setMessages(prev => [...prev, { id: crypto.randomUUID(), role: "assistant", content: "(Placeholder) Antwoord gebaseerd op handleiding (komt later)." }]);
+      setMessages(prev => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          content:
+            `Momenteel werken wij aan een chatbot om al uw vragen met betrekking tot Vconnect te kunnen beantwoorden. We verwachten deze snel live te hebben. Momenteel verwijzen wij u graag door naar onze helpdesk. <br /><a href="https://misterhelp.tawk.help/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:8px;padding:8px 20px;border-radius:9999px;background:#2563eb;color:#fff;font-weight:500;text-decoration:none;box-shadow:0 2px 8px rgba(37,99,235,0.12);">Klik hier</a>`
+        }
+      ]);
       setLoading(false);
     }, 900);
   };
@@ -64,7 +72,7 @@ export default function VconnectChat() {
                     m.role === "user" ? "ml-auto bg-primary text-white" : "bg-slate-100 text-slate-800"
                   }`}
                 >
-                  {m.content}
+                  <span dangerouslySetInnerHTML={{ __html: m.content }} />
                 </div>
               ))}
               {loading && (
