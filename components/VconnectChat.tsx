@@ -11,7 +11,7 @@ interface ChatMessage {
 
 export default function VconnectChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([
-  { id: "welcome", role: "assistant", content: "Welkom! Stel uw vraag over hoe u Vconnect gebruikt. Verwijs gerust naar onderdelen uit de handleiding." }
+  { id: "welcome", role: "assistant", content: "Welkom! De Vconnect chat is momenteel in ontwikkeling. Voorlopig verwijzen wij u graag door naar onze helppagina" }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -85,7 +85,7 @@ export default function VconnectChat() {
                 className="w-full resize-none rounded-xl border border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/30 px-4 py-3 text-sm leading-relaxed min-h-[90px]"
               />
               <div className="flex items-center justify-between">
-                <span className="text-xs text-slate-500">Prototype – antwoorden zijn plaats­houders.</span>
+                <span className="text-xs text-slate-500">Momenteel werken wij aan een chatbot rond het gebruik van Vconnect</span>
                 <button
                   type="submit"
                   disabled={loading}

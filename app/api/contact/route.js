@@ -25,24 +25,58 @@ export async function POST(req) {
   if (!captcha) {
     return json({ success: false, error: 'Captcha ontbreekt.' }, 400);
   }
-  const secret = process.env.RECAPTCHA_SECRET_KEY;
-  if (!secret) {
-    console.warn('[contact] Geen reCAPTCHA secret key geconfigureerd.');
-    return json({ success: false, error: 'Server captcha configuratie ontbreekt.' }, 500);
-  }
-  try {
-    const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `secret=${encodeURIComponent(secret)}&response=${encodeURIComponent(captcha)}`
-    });
-    const verifyData = await verifyRes.json();
-    if (!verifyData.success) {
-      return json({ success: false, error: 'Captcha validatie mislukt.' }, 400);
+  const useEnterprise = process.env.RECAPTCHA_ENTERPRISE === '1';
+  if (useEnterprise) {
+    const projectId = process.env.RECAPTCHA_ENTERPRISE_PROJECT_ID;
+    const apiKey = process.env.RECAPTCHA_ENTERPRISE_API_KEY;
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!projectId || !apiKey || !siteKey) {
+      console.warn('[contact] Enterprise recaptcha ontbrekende configuratie.');
+      return json({ success: false, error: 'Enterprise captcha configuratie ontbreekt.' }, 500);
     }
-  } catch (e) {
-    console.error('[contact] Captcha validatie error', e);
-    return json({ success: false, error: 'Captcha validatie error.' }, 500);
+    try {
+      const assessRes = await fetch(`https://recaptchaenterprise.googleapis.com/v1/projects/${encodeURIComponent(projectId)}/assessments?key=${encodeURIComponent(apiKey)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: {
+            token: captcha,
+            siteKey,
+            expectedAction: 'contact'
+          }
+        })
+      });
+      const assess = await assessRes.json();
+      const valid = assess?.tokenProperties?.valid === true;
+      const actionOk = !assess?.tokenProperties?.action || assess?.tokenProperties?.action === 'contact';
+      const score = typeof assess?.riskAnalysis?.score === 'number' ? assess.riskAnalysis.score : 0;
+      if (!valid || !actionOk || score < 0.4) {
+        return json({ success: false, error: 'Captcha validatie mislukt.' }, 400);
+      }
+    } catch (e) {
+      console.error('[contact] Enterprise captcha validatie error', e);
+      return json({ success: false, error: 'Captcha validatie error.' }, 500);
+    }
+  } else {
+    const secret = process.env.RECAPTCHA_SECRET_KEY;
+    if (!secret) {
+      console.warn('[contact] Geen reCAPTCHA secret key geconfigureerd.');
+      return json({ success: false, error: 'Server captcha configuratie ontbreekt.' }, 500);
+    }
+    try {
+      const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${encodeURIComponent(secret)}&response=${encodeURIComponent(captcha)}`
+      });
+      const verifyData = await verifyRes.json();
+      if (!verifyData.success) {
+        return json({ success: false, error: 'Captcha validatie mislukt.' }, 400);
+      }
+    } catch (e) {
+      console.error('[contact] Captcha validatie error', e);
+      return json({ success: false, error: 'Captcha validatie error.' }, 500);
+    }
   }
 
   // Honeypot (bots vaak vullen verborgen velden)

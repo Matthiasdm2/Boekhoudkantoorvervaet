@@ -1,4 +1,11 @@
 node_modules
+.next
+.env
+.env.local
+.env.*.local
+dist
+*.log
+.DS_Store
 node_modules
 .next
 dist
